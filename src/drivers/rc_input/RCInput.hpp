@@ -57,6 +57,8 @@
 #include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/adc_report.h>
 #include <uORB/topics/input_rc.h>
+#include <uORB/topics/input_rc_inj.h>
+#include <uORB/topics/input_rc_raw.h>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_status.h>
@@ -126,6 +128,8 @@ private:
 
 	void rc_io_invert(bool invert);
 
+	void overide_rc(void);
+
 	hrt_abstime _rc_scan_begin{0};
 
 	bool _initialized{false};
@@ -140,7 +144,11 @@ private:
 	uORB::Subscription	_vehicle_cmd_sub{ORB_ID(vehicle_command)};
 	uORB::Subscription	_vehicle_status_sub{ORB_ID(vehicle_status)};
 
+	uORB::Subscription	_injected_input_rc{ORB_ID(input_rc_inj)};
+
 	input_rc_s	_rc_in{};
+	input_rc_raw_s	_rc_in_raw{};
+        input_rc_inj_s	_rc_in_inj{};
 
 	float		_analog_rc_rssi_volt{-1.0f};
 	bool		_analog_rc_rssi_stable{false};
@@ -149,6 +157,7 @@ private:
 
 
 	uORB::PublicationMulti<input_rc_s>	_to_input_rc{ORB_ID(input_rc)};
+	uORB::PublicationMulti<input_rc_raw_s>	_to_input_raw_rc{ORB_ID(input_rc_raw)};
 
 	int		_rcs_fd{-1};
 	char		_device[20] {};					///< device / serial port path

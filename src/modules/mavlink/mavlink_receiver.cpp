@@ -1938,7 +1938,7 @@ MavlinkReceiver::handle_message_rc_channels_override(mavlink_message_t *msg)
 	}
 
 	// fill uORB message
-	input_rc_s rc{};
+	input_rc_inj_s rc{};
 
 	// metadata
 	rc.timestamp = hrt_absolute_time();
@@ -1949,7 +1949,7 @@ MavlinkReceiver::handle_message_rc_channels_override(mavlink_message_t *msg)
 	rc.rc_lost_frame_count = 0;
 	rc.rc_total_frame_count = 1;
 	rc.rc_ppm_frame_length = 0;
-	rc.input_source = input_rc_s::RC_INPUT_SOURCE_MAVLINK;
+	rc.input_source = input_rc_inj_s::RC_INPUT_SOURCE_MAVLINK;
 
 	// channels
 	rc.values[0] = man.chan1_raw;
@@ -1988,7 +1988,7 @@ MavlinkReceiver::handle_message_rc_channels_override(mavlink_message_t *msg)
 	}
 
 	// publish uORB message
-	_rc_pub.publish(rc);
+	_rc_inj_pub.publish(rc);
 }
 
 void

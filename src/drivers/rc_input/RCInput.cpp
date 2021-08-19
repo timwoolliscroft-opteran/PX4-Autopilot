@@ -167,6 +167,21 @@ RCInput::task_spawn(int argc, char *argv[])
 	return PX4_OK;
 }
 
+
+void
+RCInput::overide_rc(void){
+
+	if (_injected_input_rc.update(&_rc_in_inj)) {
+
+
+
+	}
+
+	for (unsigned i = 0; i < _rc_in.channel_count; i++){
+		_rc_in.values[i] = _rc_in_inj.values[i];
+	}
+}
+
 void
 RCInput::fill_rc_in(uint16_t raw_rc_count_local,
 		    uint16_t raw_rc_values_local[input_rc_s::RC_INPUT_MAX_CHANNELS],
@@ -696,8 +711,21 @@ void RCInput::Run()
 
 		perf_end(_cycle_perf);
 
+
+
 		if (rc_updated) {
 			perf_count(_publish_interval_perf);
+
+			_rc_in.values[0] =100;
+			/* Publish raw to mavlink */
+			for (unsigned i = 0; i < _rc_in.channel_count; i++) {
+				_rc_in_raw.values[i] = _rc_in.values[i];
+			}
+			_rc_in_raw.channel_count = _rc_in.channel_count;
+			_to_input_raw_rc.publish(_rc_in_raw);
+			/* perform overides */
+			overide_rc();
+
 
 			_to_input_rc.publish(_rc_in);
 

@@ -86,6 +86,8 @@ set(msg_files
 	home_position.msg
 	hover_thrust_estimate.msg
 	internal_combustion_engine_status.msg
+	input_rc_raw.msg
+	input_rc_inj.msg
 	input_rc.msg
 	iridiumsbd_status.msg
 	irlock_report.msg
