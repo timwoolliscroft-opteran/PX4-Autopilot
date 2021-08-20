@@ -22,7 +22,7 @@ px4_add_board(
 		#magnetometer
 		magnetometer/isentek/ist8310
 		#optical_flow/px4flow
-		osd
+		#osd
 		#pwm_out_sim
 		pwm_out
 		rc_input
